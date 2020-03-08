@@ -70,6 +70,7 @@ def scrap_data(numbers):
                     time.sleep(1)
                     driver.close()
                     driver.switch_to.window(driver.window_handles[0])
+                    driver.switch_to.window(driver.window_handles[0])
                 except:
                     con = [""]
             except:
@@ -84,6 +85,9 @@ def scrap_data(numbers):
             with open("out.csv", 'a', newline='', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL, delimiter=',')
                 writer.writerows(content)
+            if not count % 10:
+                print("-----Resting for 10 sec-----")
+                time.sleep(10)
         else:
             print("Data already available")
 
