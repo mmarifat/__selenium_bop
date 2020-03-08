@@ -50,6 +50,8 @@ def scrap_data(numbers):
                 name = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDName'))).text
                 rd = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDBot2'))).text
                 release_date = re.sub("[^0-9,/]", "", rd)
+                if release_date == '':
+                    release_date = 'LIFE'
                 con2 = [no, name, release_date]
                 wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDBot1'))).click()
 
