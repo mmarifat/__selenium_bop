@@ -1,3 +1,10 @@
+# Author Minhaz Ahamed<mma.rifat66@gmail.com>
+# Email: mma.rifat66@gmail.com
+# Web: https://mma.champteks.us
+# Do not edit file without permission of author
+# All right reserved by Minhaz Ahamed<mma.rifat66@gmail.com>
+# Created on: 08/03/2020 4:15 PM
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
