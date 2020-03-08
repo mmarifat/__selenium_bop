@@ -46,10 +46,13 @@ def scrap_data(numbers):
             search.send_keys(no)
 
             wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#searchNumber'))).click()
-            name = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDName'))).text
-            rd = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDBot2'))).text
-            release_date = re.sub("[^0-9,/]", "", rd)
-            con2 = [no, name, release_date]
+            try:
+                name = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDName'))).text
+                rd = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDBot2'))).text
+                release_date = re.sub("[^0-9,/]", "", rd)
+                con2 = [no, name, release_date]
+            except:
+                continue
 
             # find if further info available or not
             try:
@@ -64,7 +67,7 @@ def scrap_data(numbers):
                 last_addr = con[3] + "," + con[4]
                 del con[-2:]
                 con.append(last_addr)
- 
+
                 driver.close()
                 time.sleep(1)
                 driver.switch_to.window(driver.window_handles[0])
