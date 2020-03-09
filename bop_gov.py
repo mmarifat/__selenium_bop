@@ -61,20 +61,22 @@ def scrap_data(numbers):
                 # find if further info available or not
                 try:
                     driver.switch_to.window(driver.window_handles[1])
-                    wait.until(EC.presence_of_element_located((By.LINK_TEXT, "Inmate Mail"))).click()
-                    time.sleep(3)
-                    address = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@class='address-item']/div"))).text
+                    if wait.until(EC.presence_of_element_located((By.LINK_TEXT, "Inmate Mail"))).click():
+                        time.sleep(3)
+                        address = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@class='address-item']/div"))).text
 
-                    # manipulation
-                    con = re.sub("[\n]", ",", address).rsplit(",")
-                    con.pop(0)
-                    last_addr = con[3] + "," + con[4]
-                    del con[-2:]
-                    con.append(last_addr)
+                        # manipulation
+                        con = re.sub("[\n]", ",", address).rsplit(",")
+                        con.pop(0)
+                        last_addr = con[3] + "," + con[4]
+                        del con[-2:]
+                        con.append(last_addr)
 
-                    time.sleep(3)
+                        time.sleep(3)
+                    else:
+                        con = ['']
+
                     driver.close()
-                    driver.switch_to.window(driver.window_handles[0])
                     driver.switch_to.window(driver.window_handles[0])
                 except:
                     con = [""]
