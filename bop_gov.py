@@ -27,7 +27,7 @@ def scrap_data(numbers):
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get("https://www.bop.gov/inmateloc/")
 
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 60)
     for count, no in enumerate(numbers[::1], 1):
         print("************************\nNow doing: ", no)
 
@@ -96,7 +96,8 @@ def scrap_data(numbers):
 
 
     # close and finish all
-    driver.quite()
+    print("Total scraped: ", count)
+    driver.quit()
 
 
 # take input search no's
