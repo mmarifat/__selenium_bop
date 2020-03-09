@@ -15,8 +15,6 @@ import time
 import re
 from os import path
 
-
-
 # check for existing files
 if not path.exists("out.csv"):
     with open("out.csv", 'w', newline='', encoding='utf-8') as csv_file:
@@ -24,13 +22,13 @@ if not path.exists("out.csv"):
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
-# initialize
-driver = webdriver.Chrome(ChromeDriverManager().install())
-driver.get("https://www.bop.gov/inmateloc/")
-
 def scrap_data(numbers):
+    # initialize
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.get("https://www.bop.gov/inmateloc/")
+
     wait = WebDriverWait(driver, 10)
-    for count, no in enumerate(numbers, 1):
+    for count, no in enumerate(numbers[::1], 1):
         print("************************\nNow doing: ", no)
 
         # check existing files in the csv
@@ -48,7 +46,7 @@ def scrap_data(numbers):
             search.clear()
             search.send_keys(no)
             wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#searchNumber'))).click()
-            time.sleep(3)
+            time.sleep(2)
             try:
                 name = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDName'))).text
                 rd = wait.until(EC.element_to_be_clickable((By.ID, 'numResultTDBot2'))).text
@@ -61,8 +59,10 @@ def scrap_data(numbers):
                 # find if further info available or not
                 try:
                     driver.switch_to.window(driver.window_handles[1])
-                    if wait.until(EC.presence_of_element_located((By.LINK_TEXT, "Inmate Mail"))).click():
-                        time.sleep(3)
+                    time.sleep(2)
+                    try:
+                        wait.until(EC.presence_of_element_located((By.LINK_TEXT, "Inmate Mail"))).click()
+                        time.sleep(2)
                         address = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@class='address-item']/div"))).text
 
                         # manipulation
@@ -71,13 +71,12 @@ def scrap_data(numbers):
                         last_addr = con[3] + "," + con[4]
                         del con[-2:]
                         con.append(last_addr)
-
-                        time.sleep(3)
-                    else:
-                        con = ['']
+                    except:
+                        con = [""]
 
                     driver.close()
                     driver.switch_to.window(driver.window_handles[0])
+                    time.sleep(2)
                 except:
                     con = [""]
             except:
@@ -92,12 +91,13 @@ def scrap_data(numbers):
             with open("out.csv", 'a', newline='', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL, delimiter=',')
                 writer.writerows(content)
-
         else:
             print("Data already available")
 
+
     # close and finish
     driver.quite()
+
 
 # take input search no's
 with open('in.csv', mode='r') as csv_file:
