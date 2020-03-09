@@ -95,7 +95,7 @@ def scrap_data(numbers):
             print("Data already available")
 
 
-    # close and finish
+    # close and finish all
     driver.quite()
 
 
