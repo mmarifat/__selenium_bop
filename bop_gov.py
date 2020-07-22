@@ -16,8 +16,8 @@ import re
 from os import path
 
 # check for existing files
-if not path.exists("out.csv"):
-    with open("out.csv", 'w', newline='', encoding='utf-8') as csv_file:
+if not path.exists("output.csv"):
+    with open("output.csv", 'w', newline='', encoding='utf-8') as csv_file:
         fieldnames = ['No', 'Name', 'Release', 'Address1', 'Address2', 'Address3', 'Address4']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -32,7 +32,7 @@ def scrap_data(numbers):
         print("************************\nNow doing: ", no)
 
         # check existing files in the csv
-        with open('out.csv', mode='r') as file:
+        with open('output.csv', mode='r') as file:
             reader = csv.DictReader(file)
             check = []
             for row in reader:
@@ -88,7 +88,7 @@ def scrap_data(numbers):
             print("Completed : ", count, "\n************************\n")
 
             # write into a csv with unicode support
-            with open("out.csv", 'a', newline='', encoding='utf-8') as csvfile:
+            with open("output.csv", 'a', newline='', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL, delimiter=',')
                 writer.writerows(content)
         else:
@@ -101,7 +101,7 @@ def scrap_data(numbers):
 
 
 # take input search no's
-with open('in.csv', mode='r') as csv_file:
+with open('input.csv', mode='r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     no = []
     for row in csv_reader:
